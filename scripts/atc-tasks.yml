@@ -5,7 +5,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "bandwidth" and r._field == "value")
@@ -14,7 +14,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -22,7 +21,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "ats.proxy.process.http.current_client_connections" and r._field == "value")
@@ -31,7 +30,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -39,7 +37,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/monthly")
       |> range(start: -5m)
       |> filter(fn: (r) => r._measurement == "bandwidth.1min" and r._field == "value")
@@ -48,7 +46,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -56,7 +53,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/monthly")
       |> range(start: -5m)
       |> filter(fn: (r) => r._measurement == "connections.1min" and r._field == "value")
@@ -65,7 +62,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -73,17 +69,16 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/monthly")
       |> range(start: -5m)
       |> filter(fn: (r) => r._measurement == "bandwidth.1min" and r._field == "value")
-      |> group(columns: ["cdn", "type"])
+      |> group(columns: ["cdn", "type", "_field"])
       |> aggregateWindow(every: 1m, fn: sum, createEmpty: false)
       |> set(key: "_measurement", value: "bandwidth.cdn.type.1min")
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -91,17 +86,16 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/monthly")
       |> range(start: -5m)
       |> filter(fn: (r) => r._measurement == "connections.1min" and r._field == "value")
-      |> group(columns: ["cdn", "type"])
+      |> group(columns: ["cdn", "type", "_field"])
       |> aggregateWindow(every: 1m, fn: sum, createEmpty: false)
       |> set(key: "_measurement", value: "connections.cdn.type.1min")
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -109,7 +103,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "maxKbps" and r._field == "value")
@@ -118,7 +112,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -126,7 +119,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/monthly")
       |> range(start: -5m)
       |> filter(fn: (r) => r._measurement == "maxkbps.1min" and r._field == "value")
@@ -135,7 +128,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -143,7 +135,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "ats.proxy.process.cache.volume_1.wrap_count" and r._field == "value")
@@ -153,7 +145,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -161,7 +152,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "cache_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "ats.proxy.process.cache.volume_2.wrap_count" and r._field == "value")
@@ -171,7 +162,6 @@ spec:
       |> to(bucket: "cache_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -179,7 +169,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "deliveryservice_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "tps_2xx" and r._field == "value" and r.cachegroup == "total")
@@ -188,7 +178,6 @@ spec:
       |> to(bucket: "deliveryservice_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -196,7 +185,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "deliveryservice_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "tps_3xx" and r._field == "value" and r.cachegroup == "total")
@@ -205,7 +194,6 @@ spec:
       |> to(bucket: "deliveryservice_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -213,7 +201,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "deliveryservice_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "tps_4xx" and r._field == "value" and r.cachegroup == "total")
@@ -222,7 +210,6 @@ spec:
       |> to(bucket: "deliveryservice_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -230,7 +217,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "deliveryservice_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "tps_5xx" and r._field == "value" and r.cachegroup == "total")
@@ -239,7 +226,6 @@ spec:
       |> to(bucket: "deliveryservice_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -247,7 +233,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "deliveryservice_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "tps_total" and r._field == "value" and r.cachegroup == "total")
@@ -256,7 +242,6 @@ spec:
       |> to(bucket: "deliveryservice_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -264,7 +249,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "deliveryservice_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "kbps" and r._field == "value" and r.cachegroup == "total")
@@ -273,7 +258,6 @@ spec:
       |> to(bucket: "deliveryservice_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -281,7 +265,7 @@ metadata:
 spec:
   every: 1m
   query: |
-    
+
     from(bucket: "deliveryservice_stats/daily")
       |> range(start: -2m)
       |> filter(fn: (r) => r._measurement == "kbps" and r._field == "value" and r.cachegroup != "total")
@@ -290,7 +274,6 @@ spec:
       |> to(bucket: "deliveryservice_stats/monthly")
 
 ---
-
 apiVersion: influxdata.com/v2alpha1
 kind: Task
 metadata:
@@ -298,11 +281,11 @@ metadata:
 spec:
   every: 1d
   query: |
-    
+
     from(bucket: "deliveryservice_stats/monthly")
       |> range(start: -2d)
       |> filter(fn: (r) => r._measurement == "kbps.ds.1min" and r._field == "value")
-      |> group(columns: ["deliveryservice", "cdn"])
+      |> group(columns: ["deliveryservice", "cdn", "_field"])
       |> aggregateWindow(every: 1d, fn: max, createEmpty: false)
       |> set(key: "_measurement", value: "max.kbps.ds.1day")
       |> to(bucket: "deliveryservice_stats/indefinite")
